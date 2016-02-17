@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Salon Locator</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+
+
+<script data-require="jquery@*" data-semver="2.1.4" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script data-require="bootstrap@*" data-semver="3.3.6" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+	#map {
+		height: 100%;
+		margin: 0;
+	}
+	.button-panel {
+		margin-left: auto;
+		margin-right: auto;
+		width:60%;
+	}
+	.gm-style-iw {
+		min-height: 150px;
+	}
+	.gm-style-iw td {
+		padding-top: 3px;
+	}
+	.gm-style-iw td:first-child {
+		padding-right: 20px;
+	}
+</style>
+</head>
+<body>
+	<header class="_demo--heading">
+		<div class="_demo--container">
+			<a class="wordmark" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/">
+				<span class="wordmark--left">IBM</span>
+				<span class="wordmark--right">Watson Developer Cloud</span>
+			</a>
+			<nav class="heading-nav">
+				<a class="heading-nav--item" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/services-catalog.html">
+					Services
+				</a>
+				<a class="heading-nav--item" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/">
+					Docs
+				</a>
+				<a class="heading-nav--item" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/gallery.html">
+					App Gallery
+				</a>
+				<a class="heading-nav--item" href="https://developer.ibm.com/watson/">
+					Community
+				</a>
+			</nav>
+		</div>
+	</header>
+
+	<div class="_demo--banner">
+		<div class="_demo--container">
+			<div class="banner--service-icon-container">
+				<img class="banner--service-icon" src="images/icons/cosmetics.svg" alt="Concept Insight Service Demo Icon">
+			</div>
+			<div class="banner--service-info">
+				<h1 class="banner--service-title base--h1">
+					<img class="banner--service-icon_INLINE" src="images/icons/cosmetics.svg" alt="Concept Insight Service Demo Icon">
+					Salon Locator
+				</h1>
+				<div class="banner--service-description">The Dialog service provides a platform for managing conversations between virtual agents and users through an Application Programming Interface.</div>
+				<div class="banner--service-resource">
+			</div>
+		</div>
+	</div>
+	<div class="_demo--container">
+		<article class="_demo--content base--article">
+			<h2 class="base--h2">
+			</h2>
+			<p></p>
+			<div class="separate-line"></div>
+			<h2 class="base--h2">
+			</h2>
+			<div class="_content--dialog">
+				<div class="chat-window">
+					<div class="chat-box">
+						<div class="chat-box--pane">
+							<div class="chat-box--item_WATSON chat-box--item chat-box--item_HIDDEN">
+								<div class="chat-box--container">
+									<div class="img-container chat-box--avatar chat-box--avatar_WATSON">
+										<img src="images/icons/watsondevops.svg" class="chat-box--avatar-img">
+									</div>
+									<div class="chat-box--message">
+										<div class="chat-box--message-vertical">
+											<p class="chat-box--message-text base--p"></p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="chat-box--item_YOU chat-box--item chat-box--item_HIDDEN">
+								<div class="chat-box--container">
+									<div class="chat-box--message">
+										<div class="chat-box--message-vertical">
+											<p class="chat-box--message-text base--p"></p>
+										</div>
+									</div>
+									<div class="img-container chat-box--avatar chat-box--avatar_YOU">
+										<img src="images/icons/woman.svg" class="chat-box--avatar-img">
+									</div>
+								</div>
+							</div>
+							<!-- adding extra space hack -->
+							<div style="height: 15px; visibility: hidden;"></div>
+							<div class="loader">
+								<div class="loader--fallback"><img src="images/watson.gif" width="50" alt=""></div>
+							</div>
+						</div>
+					</div>
+
+					<input type="text" placeholder="Type a response and hit enter" value="" autocomplete="off" class="chat-window--message-input base--text-input">
+				</div>
+			</div>
+
+			<div class="_content--map">
+				<div id="map"></div>
+				<div class="button-panel">
+					<button id="override-location" class="base--button">Override Location (place me in Union Square, SF)</button>
+				</div>
+			</div>
+
+		</article>
+		
+		<div class="_content--data">
+			<div class="tab-panels" role="tabpanel">
+				<ul class="tab-panels--tab-list" role="tablist">
+					<li class="tab-panels--tab-list-item base-li" role="presentation">
+						<a class="tab-panels--tab base--a active" href="#data-panel" aria-controls="text" role="tab">Data</a>
+					</li>
+					<li class="tab-panels--tab-list-item base-li" role="presentation">
+						<a class="tab-panels--tab base--a" href="#json-panel" aria-controls="json" role="tab">JSON</a>
+					</li>
+				</ul>
+				<div class="tab-panels--tab-content">
+					<div id="data-panel" class="tab-panels--tab-pane active" role="tab-panel">
+						<div class="base--textarea">
+							<h6 class="base--h6">Information</h6>
+							<div class="data--information">
+							</div>
+							<h6 class="base--h6">Profile</h6>
+							<div class="data--profile">
+							</div>
+						</div>
+					</div>
+					<div id="json-panel" class="tab-panels--tab-pane" role="tab-panel">
+						<textarea class="base--textarea"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Property template -->
+	<div class="data--variable hidden">
+		<span class="data--variable-title"></span>
+		<span class="data--variable-value"></span>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4JQTJ20bk30fDgWuFT8sUxow78bQm7fM" async defer></script>
+	<script type="text/javascript" src="js/demo.js"></script>
+</body>
+</html>
