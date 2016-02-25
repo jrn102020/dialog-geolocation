@@ -23,6 +23,7 @@ var conversation_id, client_id, map, my_location, place_markers = [], location_m
 
 var UNION_SQUARE_SF = { lat: 37.788070, lng: -122.406729 };
 var my_location = UNION_SQUARE_SF;
+var geoinfo = { services: [] };
 
 function initMap() {
   map = new google.maps.Map($('#map').get(0), {
@@ -122,7 +123,7 @@ $(document).ready(function () {
       clearPlaces();
       
       console.log("profile data", data.name_values);
-      var geoinfo = { services: [] };
+      geoinfo = { services: [] };
       for (var i = 0; i < data.name_values.length; i++) {
         var par = data.name_values[i];
         if (par.value !== '') {
@@ -132,16 +133,20 @@ $(document).ready(function () {
             geoinfo.services.push(par.value);
           }
           else if (par.name.indexOf('method') !== -1) {
-            geoinfo.method = par.value;
+            geoinfo.method = par.value.toLowerCase();
+          }
+          else if (par.name.indexOf('location') !== -1) {
+            geoinfo.named_location = par.value;
           }
         }
       }
-      console.log("geoinfo", geoinfo)
+
       if (geoinfo.method && geoinfo.services.length > 0) {
-        var RADII = { foot: 1600, bike: 8000, car: 20000 };
+        var RADII = { walk: 1600, vehicle: 20000 };
         var radius = 20000;
         if (RADII[geoinfo.method]) radius = RADII[geoinfo.method];
-        getPlaces(my_location, geoinfo.services, radius);
+        geoinfo.radius = radius;
+        getPlaces(my_location, geoinfo.services, geoinfo.named_location, radius);
       }
       
     }).fail(function(error){
@@ -212,11 +217,12 @@ $(document).ready(function () {
       place_markers[i].setMap(null);
   }
 
-  var getPlaces = function(location, services, radius) {
+  var getPlaces = function(location, services, named_location, radius) {
     
     var params = { 
           lat: location.lat,
           lng: location.lng,
+          named_location: named_location,
           services: services || ["atm"],
           radius: radius || 1000  
       };
@@ -276,11 +282,21 @@ $(document).ready(function () {
   }
 
   $('#override-location').click(function() {
+    clearPlaces();    
     my_location = UNION_SQUARE_SF;
     map.setCenter(my_location);
     map.setZoom(12);
     location_marker.setPosition(my_location);
-    // getPlaces(my_location, ['nails'], 10000);
+    getPlaces(my_location, geoinfo.services, null, geoinfo.radius);
+  })
+  
+  $('#lookup-location').click(function() {
+    clearPlaces();
+    var named_location = $('#named-location').val();
+    console.log("geoinfo", geoinfo)
+    if ((geoinfo.services.length > 0) && (named_location !== '')) {
+      getPlaces(my_location, geoinfo.services, named_location, geoinfo.radius);
+    }
   })
 
   // Initialize the conversation

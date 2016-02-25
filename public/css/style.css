@@ -1215,8 +1215,10 @@ pre[class*=" language-"] {
 
 
 ._content--map {
+  position:relative;
+  top: 27px;
   width: 49%;
-  height: 340px;
+  height: 300px;
   display: inline-block;
 }
 
@@ -1225,3 +1227,12 @@ pre[class*=" language-"] {
   height: 100%;
 }
 
+.location-controls {
+  padding: 10px 10px 0 10px;
+  margin-bottom: 0;
+  text-align: right;
+}
+
+.location-controls input[type="text"] {
+  margin-bottom: 5px;
+}
